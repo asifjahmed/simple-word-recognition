@@ -150,6 +150,16 @@ def displayHist():
 
 	toolbar.update()
 	myCanvas._tkcanvas.pack()
+	
+	#ATTN: this is the call to the function you should
+	#fill in with AI code, with the variable you want included.
+	parseNewData(magBin)
+	
+#ATTN: fill in with AT code :P
+def parseNewData(magBin):
+	#TODO: word recog
+	return
+	
 
 root = Tk.Tk()
 root.wm_title("Embedding in TK")
@@ -184,9 +194,9 @@ entry = Tk.Entry(root, width = 20)
 entry.pack(side = Tk.LEFT, padx=0,pady=8)
 
 
-button2 = Tk.Button(root, text="Learn")
-button2.grid(row = 1, column = 1)
-button2.pack(side = Tk.RIGHT, padx=8,pady=8)
+# button2 = Tk.Button(root, text="Learn")
+# button2.grid(row = 1, column = 1)
+# button2.pack(side = Tk.RIGHT, padx=8,pady=8)
 
 root.mainloop()
 
