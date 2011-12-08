@@ -6,6 +6,7 @@ from numpy import *
 import Tkinter as Tk
 import sys
 import os
+import random as r
 
 
 import matplotlib
@@ -159,8 +160,14 @@ def displayHist():
 def parseNewData(magBin):
 	#TODO: word recog
 	return
-	
 
+#sets all weights in a weight array to a random number
+#between -1, and 1
+def set_random_weights(weight_vector):
+  for index in range(len(weight_vector)):
+    weight_vector[index] = r.uniform(-1,1)
+  return weight_vector
+  
 root = Tk.Tk()
 root.wm_title("Embedding in TK")
 
