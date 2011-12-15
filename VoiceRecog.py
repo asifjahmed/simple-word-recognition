@@ -40,6 +40,7 @@ weightsNo = []
 weightsMaybe = []
 currentMagBin = []
 
+# this can be changed anywhere from 0 < learning_rate <= 1
 learning_rate = 0.07
 inputSize = 20
 numOutputs = len(dictionary)
@@ -48,9 +49,9 @@ numOutputs = len(dictionary)
 # Perceptron definitions
 #-------------------------------------------------------
 
-#returns the sum of the sigmoid function tanh(Xi*Wi)
-#@param1 frequency bin values
-#@param2 'yes', 'no', or 'maybe'
+# returns the sum of the sigmoid function tanh(Xi*Wi)
+# @param1 frequency bin values
+# @param2 'yes', 'no', or 'maybe'
 def sum_sig(values, word):
    if(word == 'yes'):
       return sum(math.tanh(value*weightsYes[index]) for index, value in enumerate(values))
@@ -60,8 +61,8 @@ def sum_sig(values, word):
       return sum(math.tanh(value*weightsMaybe[index]) for index, value in enumerate(values))
 
 
-#Called to train the word that the perceptron
-#should actualy guess
+# Called to train the word that the perceptron
+# should actualy guess
 def trainActual():
    word = entry.get().lower()
    if word not in dictionary:
@@ -83,15 +84,15 @@ def trainActual():
       entry.delete(0, len(word))
       entry.insert(0, word + ' learned')
 
-#trains all the perceptrons using the initial data collected
-#by calling their respective train method
+# trains all the perceptrons using the initial data collected
+# by calling their respective train method
 def train(training_set):
    trainYes([[training_set[0], 1], [training_set[1], 1], [training_set[2], 0], [training_set[3], 0], [training_set[4], 0], [training_set[5], 0]])
    trainNo([[training_set[0], 0], [training_set[1], 0], [training_set[2], 1], [training_set[3], 1], [training_set[4], 0], [training_set[5], 0]])
    trainMaybe([[training_set[0], 0], [training_set[1], 0], [training_set[2], 0], [training_set[3], 0], [training_set[4], 1], [training_set[5], 1]])
 
-#trains the yes perceptron to return 1 for 'yes'
-#and 0 for both 'no' and 'maybe'
+# trains the yes perceptron to return 1 for 'yes'
+# and 0 for both 'no' and 'maybe'
 def trainYes(training_set):
    global weightsYes
    for k in range(400):
@@ -106,8 +107,8 @@ def trainYes(training_set):
       if errors == 0:
          break
 
-#trains the no perceptron to return 1 for 'no'
-#and 0 for both 'yes' and 'maybe'
+# trains the no perceptron to return 1 for 'no'
+# and 0 for both 'yes' and 'maybe'
 def trainNo(training_set):
    global weightsNo
    for k in range(400):
@@ -122,8 +123,8 @@ def trainNo(training_set):
       if errors == 0:
          break
 
-#trains the maybe perceptron to return 1 for 'maybe'
-#and 0 for both 'yes' and 'no'
+# trains the maybe perceptron to return 1 for 'maybe'
+# and 0 for both 'yes' and 'no'
 def trainMaybe(training_set):
    global weightsMaybe
    for k in range(400):
@@ -151,8 +152,8 @@ def parseNewData(input_vector):
    entryMW.insert(0, dictionary[result.index(max(result))])
 
 
-#call this function at the start of the program to initialize all weights
-#to a random value between 0 and 1
+# call this function at the start of the program to initialize all weights
+# to a random value between 0 and 1
 def initWeights():
    global weightsYes
    global weightsMaybe
@@ -164,7 +165,7 @@ def initWeights():
       weightsMaybe.append(r.random())   
 
 
-#Call to initialize the weights
+# Call to initialize the weights
 initWeights()
 
 
@@ -180,8 +181,6 @@ def displayHist():
    global TRAIN_COUNT
    global VECTORS_TO_TRAIN
    TRAIN_COUNT += 1
-   #Test wave
-   #wavFile = wave.open('C:\Users\Tyler\Desktop\warning.wav')
 
    #Record wave file
    paud = pyaudio.PyAudio()
@@ -192,8 +191,8 @@ def displayHist():
 
    print 'Recording word'
 
-   #ATTN: Change this to control how many seconds it
-   #records for
+   # ATTN: Change this to control how many seconds it
+   #   records for
    secsToRecord = 1
 
    all = []
@@ -243,15 +242,15 @@ def displayHist():
    mag = mag[minIdx]
    fn2 = fn2[minIdx]
 
-   #ATTN: This controls how many bins you have
+   # ATTN: This controls how many bins you have
    binSize = 20
 
    freqInBin = 2000/binSize
    j = 0
 
-   #ATTN: This contains the data you want to input into
-   #the neural network. It is the average of the magnitude of the
-   #frequencies over each histogram range
+   # ATTN: This contains the data you want to input into
+   #   the neural network. It is the average of the magnitude of the
+   #   frequencies over each histogram range
    magBin = zeros(len(range(0,binSize)))
 
 
@@ -313,7 +312,7 @@ def displayHist():
 # Code for different window's and their UI
 #-------------------------------------------------------
 
-#Window 1 for training instructions
+# Window 1 for training instructions
 learn = Tk.Tk()
 learn.wm_title('Training Instructions')
 learn.geometry('450x600')
@@ -337,7 +336,7 @@ learn.mainloop()
 
 
 
-#Window 2 for testing
+# Window 2 for testing, and initial gathering of training code
 root = Tk.Tk()
 root.wm_title("Voice Recognition")
 
@@ -370,7 +369,7 @@ label.pack(side = Tk.LEFT, padx = 12,pady=8)
 entry = Tk.Entry(root, width = 20)
 entry.pack(side = Tk.LEFT, padx=0,pady=8)
 
-quitbutton = Tk.Button(root, text="Quit", command=root.destroy)
+quitbutton = Tk.Button(root, text="QUIT", command=root.destroy)
 quitbutton.pack(side = Tk.RIGHT)
 
 button2 = Tk.Button(root, text="Learn", command=trainActual)
