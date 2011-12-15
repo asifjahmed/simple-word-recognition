@@ -1,4 +1,4 @@
-#Version 3
+#Version 4
 
 #Created by:
 #   Fernando Santamarina
@@ -137,6 +137,18 @@ def trainMaybe(training_set):
                weightsMaybe[index] += learning_rate * err * value
       if errors == 0:
          break
+
+
+# A method to get a guess for what word
+# was said during recording
+def parseNewData(input_vector):
+   summed = [sum_sig(input_vector, 'yes'), sum_sig(input_vector, 'no'), sum_sig(input_vector, 'maybe')]
+   result = []
+   for val in summed:
+      result.append(1 if val > 0.5 else 0)
+   entry.delete(0, len(entry.get()))
+   entryMW.delete(0, len(entryMW.get()))
+   entryMW.insert(0, dictionary[result.index(max(result))])
 
 
 #call this function at the start of the program to initialize all weights
@@ -293,18 +305,13 @@ def displayHist():
    else:
       parseNewData(magBin)
 
-# A method to get a guess for what word
-# was said during recording
-def parseNewData(input_vector):
-   summed = [sum_sig(input_vector, 'yes'), sum_sig(input_vector, 'no'), sum_sig(input_vector, 'maybe')]
-   result = []
-   for val in summed:
-      result.append(1 if val > 0.5 else 0)
-   entry.delete(0, len(entry.get()))
-   entryMW.delete(0, len(entryMW.get()))
-   entryMW.insert(0, dictionary[result.index(max(result))])
 
 
+
+
+#-------------------------------------------------------
+# Code for different window's and their UI
+#-------------------------------------------------------
 
 #Window 1 for training instructions
 learn = Tk.Tk()
@@ -363,6 +370,8 @@ label.pack(side = Tk.LEFT, padx = 12,pady=8)
 entry = Tk.Entry(root, width = 20)
 entry.pack(side = Tk.LEFT, padx=0,pady=8)
 
+quitbutton = Tk.Button(root, text="Quit", command=root.destroy)
+quitbutton.pack(side = Tk.RIGHT)
 
 button2 = Tk.Button(root, text="Learn", command=trainActual)
 button2.grid(row = 1, column = 1)
@@ -370,10 +379,6 @@ button2.pack(side = Tk.RIGHT, padx=8,pady=8)
 
 root.mainloop()
 
-
-
-# button = Tk.Button(frame, text="QUIT", command="frame.quit")
-# button.pack(side=LEFT)
 
 
 
