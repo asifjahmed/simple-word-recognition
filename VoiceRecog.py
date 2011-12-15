@@ -1,6 +1,6 @@
-#Version 4
+# Version 5
 
-#Created by:
+# Created by:
 #   Fernando Santamarina
 #   Tyler Cloke
 #   Zach Stiggelbout
@@ -29,11 +29,14 @@ global myCanvas
 global toolbar
 global f
 
-TRAIN_COUNT = 0
+TRAIN_COUNT = 1
 VECTORS_TO_TRAIN = []
 
-#sample dictionary, make sure to have numOutputs = length(dictionary)
+# sample dictionary, make sure to have numOutputs = length(dictionary)
 dictionary = ['yes', 'no', 'maybe']
+
+# used for instructions in Machine Words box
+TRAINING_WORDS = ['"yes"', '"yes" again', '"no"', '"no" again', '"maybe"', '"maybe" again']
 
 weightsYes = []
 weightsNo = []
@@ -90,6 +93,8 @@ def train(training_set):
    trainYes([[training_set[0], 1], [training_set[1], 1], [training_set[2], 0], [training_set[3], 0], [training_set[4], 0], [training_set[5], 0]])
    trainNo([[training_set[0], 0], [training_set[1], 0], [training_set[2], 1], [training_set[3], 1], [training_set[4], 0], [training_set[5], 0]])
    trainMaybe([[training_set[0], 0], [training_set[1], 0], [training_set[2], 0], [training_set[3], 0], [training_set[4], 1], [training_set[5], 1]])
+   entryMW.delete(0, len(entryMW.get()))
+   entryMW.insert(0, "Training is done.")
 
 # trains the yes perceptron to return 1 for 'yes'
 # and 0 for both 'no' and 'maybe'
@@ -149,7 +154,7 @@ def parseNewData(input_vector):
       result.append(1 if val > 0.5 else 0)
    entry.delete(0, len(entry.get()))
    entryMW.delete(0, len(entryMW.get()))
-   entryMW.insert(0, dictionary[result.index(max(result))])
+   entryMW.insert(0, 'I guess the word ' + dictionary[result.index(max(result))])
 
 
 # call this function at the start of the program to initialize all weights
@@ -180,6 +185,9 @@ def displayHist():
    global currentMagBin
    global TRAIN_COUNT
    global VECTORS_TO_TRAIN
+   if TRAIN_COUNT < 6:
+      entryMW.delete(0, len(entryMW.get()))
+      entryMW.insert(0, 'Say ' + TRAINING_WORDS[TRAIN_COUNT])
    TRAIN_COUNT += 1
 
    #Record wave file
@@ -297,10 +305,11 @@ def displayHist():
 # If in training phase then add to training array list
 #   when you have all 6 arrays, then train
 # else find a guess for the word
-   if(TRAIN_COUNT <=6):
+   if(TRAIN_COUNT <= 7):
       VECTORS_TO_TRAIN.append(magBin)
-      if(TRAIN_COUNT == 6):
+      if(TRAIN_COUNT == 7):
          train(VECTORS_TO_TRAIN)
+    #     entryMW.delete(0, len(entryMW.get()))
    else:
       parseNewData(magBin)
 
@@ -375,6 +384,8 @@ quitbutton.pack(side = Tk.RIGHT)
 button2 = Tk.Button(root, text="Learn", command=trainActual)
 button2.grid(row = 1, column = 1)
 button2.pack(side = Tk.RIGHT, padx=8,pady=8)
+
+entryMW.insert(0,'say ' + TRAINING_WORDS[0])
 
 root.mainloop()
 
