@@ -1,4 +1,4 @@
-#Version 2
+#Version 3
 
 #Created by:
 #   Fernando Santamarina
@@ -22,7 +22,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
-
+#-------------------------------------------------------
+# Variables
+#-------------------------------------------------------
 global myCanvas
 global toolbar
 global f
@@ -42,13 +44,9 @@ learning_rate = 0.07
 inputSize = 20
 numOutputs = len(dictionary)
 
-
-
-
-
-
-
-
+#-------------------------------------------------------
+# Perceptron definitions
+#-------------------------------------------------------
 
 #returns the sum of the sigmoid function tanh(Xi*Wi)
 #@param1 frequency bin values
@@ -159,6 +157,9 @@ initWeights()
 
 
 
+#-------------------------------------------------------
+# Audio Analysis and Display
+#-------------------------------------------------------
 
 # a tk.DrawingArea
 def displayHist():
@@ -266,8 +267,6 @@ def displayHist():
    a2 = f.add_subplot(122)
    a2.clear()
 
-   # fucnt = scipy.linspace(0, 44100, num=transformedData2.size/2)
-   # print(fucnt)
    a.plot(fn2,mag)
    a.set_title('FFT Coefficient Magnitude vs. Frequency')
 
@@ -282,10 +281,11 @@ def displayHist():
    toolbar.update()
    myCanvas._tkcanvas.pack()
 
-   #ATTN: this is the call to the function you should
-   #fill in with AI code, with the variable you want included.
    currentMagBin = magBin
 
+# If in training phase then add to training array list
+#   when you have all 6 arrays, then train
+# else find a guess for the word
    if(TRAIN_COUNT <=6):
       VECTORS_TO_TRAIN.append(magBin)
       if(TRAIN_COUNT == 6):
@@ -293,31 +293,16 @@ def displayHist():
    else:
       parseNewData(magBin)
 
-#ATTN: fill in with AT code :P
+# A method to get a guess for what word
+# was said during recording
 def parseNewData(input_vector):
-	#TODO: word recog
-   print input_vector
-
-##   input_vector = map(lambda x: x/min(input_vector), input_vector)
-##   print input_vector
    summed = [sum_sig(input_vector, 'yes'), sum_sig(input_vector, 'no'), sum_sig(input_vector, 'maybe')]
    result = []
    for val in summed:
       result.append(1 if val > 0.5 else 0)
-##   print input_vector
-   print result
-   
    entry.delete(0, len(entry.get()))
    entryMW.delete(0, len(entryMW.get()))
    entryMW.insert(0, dictionary[result.index(max(result))])
-
-#sets all weights in a weight array to a random number
-#between -1, and 1
-def set_random_weights(weight_vector):
-  for index in range(len(weight_vector)):
-    weight_vector[index] = r.uniform(-1,1)
-  return weight_vector
-
 
 
 
@@ -335,6 +320,7 @@ w.create_text(135,150, text = '\n\
                                 Once you have finished the training, then you can test by:\n   \
                                   1) Push record and say one of yes, no, or maybe\n\n\
                                 Close this window to continue.', font=("Helvetica", 14))
+
 closebutton = Tk.Button(learn, text="Close", command = learn.destroy)
 closebutton.grid(row=0, column=0)
 closebutton.pack(padx=8, pady=8)
