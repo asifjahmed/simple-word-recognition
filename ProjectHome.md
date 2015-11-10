@@ -1,0 +1,1 @@
+An attempt at simple word recognition, and visualization of the concept using Tkinter, matplotlib, and pyaudio.
